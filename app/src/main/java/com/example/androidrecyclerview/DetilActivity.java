@@ -31,6 +31,8 @@ import org.json.JSONObject;
 import java.util.ArrayList;
 import java.util.List;
 
+import static java.lang.System.load;
+
 public class DetilActivity extends AppCompatActivity {
 
     ImageView iv;
@@ -51,6 +53,10 @@ public class DetilActivity extends AppCompatActivity {
         String id = i.getStringExtra("i_idMeal");
 
         load(id);
+
+        //tampilkan tombol panah back
+        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+        getSupportActionBar().setDisplayShowHomeEnabled(true);
     }
 
     private void load(String id) {
@@ -103,7 +109,7 @@ public class DetilActivity extends AppCompatActivity {
         super.onBackPressed();
     }
 
-    //control toolbar
+    //kontrol panah back
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
         switch (item.getItemId()) {
