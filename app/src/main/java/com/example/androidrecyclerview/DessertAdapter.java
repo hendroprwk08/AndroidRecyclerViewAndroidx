@@ -35,7 +35,7 @@ class DessertAdapter extends RecyclerView.Adapter<DessertAdapter.GridViewHolder>
 
     @Override
     public void onBindViewHolder(@NonNull GridViewHolder holder, int position) {
-        //position = i;
+
         final String id = desserts.get(position).getIdMeal();
         final String meal = desserts.get(position).getStrMeal();
         final String photo = desserts.get(position).getStrMealThumb();
@@ -43,8 +43,8 @@ class DessertAdapter extends RecyclerView.Adapter<DessertAdapter.GridViewHolder>
         holder.tvMeal.setText(meal);
 
         Glide.with(context)
-            .load(photo)
-            .into(holder.imgMeal);
+                .load(photo)
+                .into(holder.imgMeal);
 
         holder.itemView.setOnClickListener(new View.OnClickListener() {
             @Override
