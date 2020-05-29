@@ -121,11 +121,8 @@ public class MainActivity extends AppCompatActivity {
 
             @Override
             public void onErrorResponse(VolleyError error) {
-                // TODO Auto-generated method stub
-                Log.d("Error: ", error.toString());
-
                 pb.setVisibility(ProgressBar.GONE);
-                Toast.makeText(MainActivity.this, "Please check your connection", Toast.LENGTH_SHORT).show();
+                Toast.makeText(MainActivity.this, "Connection problem!", Toast.LENGTH_SHORT).show();
             }
         });
 

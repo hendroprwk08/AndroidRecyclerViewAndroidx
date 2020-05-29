@@ -56,7 +56,6 @@ public class DetilActivity extends AppCompatActivity {
 
         //tampilkan tombol panah back
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
-        getSupportActionBar().setDisplayShowHomeEnabled(true);
     }
 
     private void load(String id) {
