@@ -83,6 +83,7 @@ public class MainActivity extends AppCompatActivity {
         RequestQueue queue = Volley.newRequestQueue(this);
         String url = "https://www.themealdb.com/api/json/v1/1/filter.php?c=Dessert";
 
+        //Akses HTTP
         JsonObjectRequest jsObjRequest = new JsonObjectRequest(
                 Request.Method.GET,
                 url,
@@ -95,9 +96,11 @@ public class MainActivity extends AppCompatActivity {
                         desserts = new ArrayList<>();
 
                         try {
+                            //ambil objek meals
                             JSONArray jsonArray = response.getJSONArray("meals");
                             desserts.clear();
 
+                            //masukkan kedalam Arraylist
                             if (jsonArray.length() != 0) {
                                 for (int i = 0; i < jsonArray.length(); i++) {
                                     JSONObject data = jsonArray.getJSONObject(i);
@@ -106,6 +109,7 @@ public class MainActivity extends AppCompatActivity {
                                     meal = data.getString("strMeal").toString().trim();
                                     photo = data.getString("strMealThumb").toString().trim();
 
+                                    //masukkan kedalam Arraylist
                                     desserts.add(new Dessert(id, meal, photo ));
                                 }
 
