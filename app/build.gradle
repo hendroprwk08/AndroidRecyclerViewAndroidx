@@ -16,6 +16,10 @@ android {
             proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'
         }
     }
+
+    viewBinding {
+        enabled = true
+    }
 }
 
 dependencies {
@@ -29,5 +33,4 @@ dependencies {
     implementation 'com.google.android.material:material:1.0.0'//material
     implementation 'com.android.volley:volley:1.1.1'//volley
     implementation 'com.github.bumptech.glide:glide:4.10.0'//glide
-
 }

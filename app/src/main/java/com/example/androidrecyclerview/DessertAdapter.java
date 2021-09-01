@@ -13,12 +13,15 @@ import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.bumptech.glide.Glide;
+import com.example.androidrecyclerview.databinding.ItemLayoutBinding;
 
 import java.util.List;
 
 class DessertAdapter extends RecyclerView.Adapter<DessertAdapter.GridViewHolder> {
     private List<Dessert> desserts;
     private Context context;
+
+    private ItemLayoutBinding itemLayoutBinding;
 
     public DessertAdapter(Context context, List<Dessert> desserts) {
         this.desserts = desserts;
@@ -28,35 +31,36 @@ class DessertAdapter extends RecyclerView.Adapter<DessertAdapter.GridViewHolder>
     @NonNull
     @Override
     public GridViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
-        View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.item_layout, parent, false);
-        GridViewHolder viewHolder = new GridViewHolder(view);
-        return viewHolder;
+        itemLayoutBinding = ItemLayoutBinding.inflate(LayoutInflater.from(parent.getContext()), parent, false);
+        return new GridViewHolder(itemLayoutBinding);
     }
 
     @Override
     public void onBindViewHolder(@NonNull GridViewHolder holder, int position) {
+        final String
+                id = desserts.get(position).getIdMeal(),
+                meal = desserts.get(position).getStrMeal(),
+                photo = desserts.get(position).getStrMealThumb();
 
-        final String id = desserts.get(position).getIdMeal();
-        final String meal = desserts.get(position).getStrMeal();
-        final String photo = desserts.get(position).getStrMealThumb();
-
-        holder.tvMeal.setText(meal);
+        itemLayoutBinding.tvMeal.setText(meal);
 
         Glide.with(context)
                 .load(photo)
-                .into(holder.imgMeal);
+                .centerCrop()
+                .placeholder(R.drawable.ic_image_search_grey_24)
+                .into(itemLayoutBinding.imgMeal);
 
         holder.itemView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Toast.makeText(context, meal, Toast.LENGTH_SHORT).show();
-
                 Intent i = new Intent(context, DetilActivity.class);
                 i.putExtra("i_idMeal", id);
                 i.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
                 context.startActivity(i);
             }
         });
+
+        holder.setIsRecyclable(false); //agar data yang ditampilkan stabil
     }
 
     @Override
@@ -65,14 +69,11 @@ class DessertAdapter extends RecyclerView.Adapter<DessertAdapter.GridViewHolder>
     }
 
     public class GridViewHolder extends RecyclerView.ViewHolder {
-        TextView tvMeal;
-        ImageView imgMeal;
+        ItemLayoutBinding itemLayoutBinding;
 
-        public GridViewHolder(@NonNull View itemView) {
-            super(itemView);
-
-            tvMeal = (TextView) itemView.findViewById(R.id.tv_meal);
-            imgMeal = (ImageView) itemView.findViewById(R.id.img_meal);
+        public GridViewHolder(@NonNull ItemLayoutBinding binding) {
+            super(binding.getRoot());
+            itemLayoutBinding = binding;
         }
     }
 }

@@ -20,6 +20,8 @@ import com.android.volley.VolleyError;
 import com.android.volley.toolbox.JsonObjectRequest;
 import com.android.volley.toolbox.Volley;
 import com.bumptech.glide.Glide;
+import com.example.androidrecyclerview.databinding.ActivityDetilBinding;
+import com.example.androidrecyclerview.databinding.ActivityMainBinding;
 import com.google.android.material.appbar.CollapsingToolbarLayout;
 import com.google.android.material.bottomsheet.BottomSheetBehavior;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
@@ -35,19 +37,22 @@ import static java.lang.System.load;
 
 public class DetilActivity extends AppCompatActivity {
 
-    ImageView iv;
-    TextView tvInstruction, tvName;
-    Toolbar toolbar;
+    private ActivityDetilBinding binding;
+//    ImageView iv;
+//    TextView tvInstruction, tvName;
+//    Toolbar toolbar;
     String meal, photo, instruction;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_detil);
+//        setContentView(R.layout.activity_detil);
+        binding = ActivityDetilBinding.inflate(getLayoutInflater());
+        setContentView(binding.getRoot());
 
-        iv = (ImageView) findViewById(R.id.iv_image);
-        tvName = (TextView) findViewById(R.id.detail_tv_name);
-        tvInstruction = (TextView) findViewById(R.id.detail_tv_instruction);
+//        iv = (ImageView) findViewById(R.id.iv_image);
+//        tvName = (TextView) findViewById(R.id.detail_tv_name);
+//        tvInstruction = (TextView) findViewById(R.id.detail_tv_instruction);
 
         Intent i = getIntent();
         String id = i.getStringExtra("i_idMeal");
@@ -81,10 +86,10 @@ public class DetilActivity extends AppCompatActivity {
 
                             Glide.with(getApplicationContext())
                                     .load(photo)
-                                    .into(iv);
+                                    .into(binding.ivImage);
 
-                            tvName.setText(meal);
-                            tvInstruction.setText(instruction);
+                            binding.tvName.setText(meal);
+                            binding.tvInstruction.setText(instruction);
                         } catch (JSONException e) {
                             e.printStackTrace();
                         }
