@@ -1,16 +1,14 @@
 package com.example.androidrecyclerview;
 
 import androidx.appcompat.app.AppCompatActivity;
-import androidx.appcompat.widget.Toolbar;
+
 
 import android.content.Intent;
 import android.os.Bundle;
-import android.text.method.ScrollingMovementMethod;
 import android.util.Log;
 import android.view.MenuItem;
-import android.view.View;
-import android.widget.ImageView;
-import android.widget.TextView;
+import android.widget.ProgressBar;
+import android.widget.ScrollView;
 import android.widget.Toast;
 
 import com.android.volley.Request;
@@ -21,19 +19,10 @@ import com.android.volley.toolbox.JsonObjectRequest;
 import com.android.volley.toolbox.Volley;
 import com.bumptech.glide.Glide;
 import com.example.androidrecyclerview.databinding.ActivityDetilBinding;
-import com.example.androidrecyclerview.databinding.ActivityMainBinding;
-import com.google.android.material.appbar.CollapsingToolbarLayout;
-import com.google.android.material.bottomsheet.BottomSheetBehavior;
-import com.google.android.material.floatingactionbutton.FloatingActionButton;
 
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
-
-import java.util.ArrayList;
-import java.util.List;
-
-import static java.lang.System.load;
 
 public class DetilActivity extends AppCompatActivity {
 
@@ -64,6 +53,9 @@ public class DetilActivity extends AppCompatActivity {
     }
 
     private void load(String id) {
+
+        binding.progressBar.setVisibility(ProgressBar.VISIBLE);
+
         RequestQueue queue = Volley.newRequestQueue(getApplicationContext());
         String url = "https://www.themealdb.com/api/json/v1/1/lookup.php?i=" + id;
 
@@ -90,8 +82,11 @@ public class DetilActivity extends AppCompatActivity {
 
                             binding.tvName.setText(meal);
                             binding.tvInstruction.setText(instruction);
+                            binding.scrollView.setVisibility(ScrollView.VISIBLE);
                         } catch (JSONException e) {
                             e.printStackTrace();
+                        } finally {
+                            binding.progressBar.setVisibility(ProgressBar.GONE);
                         }
                     }
                 }, new Response.ErrorListener() {

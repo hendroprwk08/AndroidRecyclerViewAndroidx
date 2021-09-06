@@ -1,9 +1,9 @@
 package com.example.androidrecyclerview;
 
-public class Dessert {
+public class Meal {
     String strMeal, strMealThumb, idMeal;
 
-    public Dessert(String idMeal, String strMeal, String strMealThumb) {
+    public Meal(String idMeal, String strMeal, String strMealThumb) {
         this.strMeal = strMeal;
         this.strMealThumb = strMealThumb;
         this.idMeal = idMeal;

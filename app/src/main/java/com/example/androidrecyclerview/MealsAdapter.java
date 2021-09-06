@@ -5,50 +5,47 @@ import android.content.Intent;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.ImageView;
-import android.widget.TextView;
-import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.bumptech.glide.Glide;
-import com.example.androidrecyclerview.databinding.ItemLayoutBinding;
+import com.example.androidrecyclerview.databinding.ItemRvBinding;
 
 import java.util.List;
 
-class DessertAdapter extends RecyclerView.Adapter<DessertAdapter.GridViewHolder> {
-    private List<Dessert> desserts;
+class MealsAdapter extends RecyclerView.Adapter<MealsAdapter.GridViewHolder> {
+    private List<Meal> meals;
     private Context context;
 
-    private ItemLayoutBinding itemLayoutBinding;
+    private ItemRvBinding itemRvBinding;
 
-    public DessertAdapter(Context context, List<Dessert> desserts) {
-        this.desserts = desserts;
+    public MealsAdapter(Context context, List<Meal> meals) {
+        this.meals = meals;
         this.context = context;
     }
 
     @NonNull
     @Override
     public GridViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
-        itemLayoutBinding = ItemLayoutBinding.inflate(LayoutInflater.from(parent.getContext()), parent, false);
-        return new GridViewHolder(itemLayoutBinding);
+        itemRvBinding = ItemRvBinding.inflate(LayoutInflater.from(parent.getContext()), parent, false);
+        return new GridViewHolder(itemRvBinding);
     }
 
     @Override
     public void onBindViewHolder(@NonNull GridViewHolder holder, int position) {
         final String
-                id = desserts.get(position).getIdMeal(),
-                meal = desserts.get(position).getStrMeal(),
-                photo = desserts.get(position).getStrMealThumb();
+                id = meals.get(position).getIdMeal(),
+                meal = meals.get(position).getStrMeal(),
+                photo = meals.get(position).getStrMealThumb();
 
-        itemLayoutBinding.tvMeal.setText(meal);
+        itemRvBinding.tvMeal.setText(meal);
 
         Glide.with(context)
                 .load(photo)
                 .centerCrop()
                 .placeholder(R.drawable.ic_image_search_grey_24)
-                .into(itemLayoutBinding.imgMeal);
+                .into(itemRvBinding.imgMeal);
 
         holder.itemView.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -65,15 +62,15 @@ class DessertAdapter extends RecyclerView.Adapter<DessertAdapter.GridViewHolder>
 
     @Override
     public int getItemCount() {
-        return desserts.size();
+        return meals.size();
     }
 
     public class GridViewHolder extends RecyclerView.ViewHolder {
-        ItemLayoutBinding itemLayoutBinding;
+        ItemRvBinding itemRvBinding;
 
-        public GridViewHolder(@NonNull ItemLayoutBinding binding) {
+        public GridViewHolder(@NonNull ItemRvBinding binding) {
             super(binding.getRoot());
-            itemLayoutBinding = binding;
+            itemRvBinding = binding;
         }
     }
 }

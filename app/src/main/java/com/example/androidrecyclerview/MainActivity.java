@@ -3,13 +3,11 @@ package com.example.androidrecyclerview;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.recyclerview.widget.DefaultItemAnimator;
 import androidx.recyclerview.widget.GridLayoutManager;
-import androidx.recyclerview.widget.RecyclerView;
 import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
 
 import android.content.res.Configuration;
 import android.os.Bundle;
 import android.os.Handler;
-import android.util.Log;
 import android.widget.ProgressBar;
 import android.widget.Toast;
 
@@ -29,7 +27,7 @@ import java.util.ArrayList;
 
 public class MainActivity extends AppCompatActivity {
 
-    ArrayList<Dessert> desserts;
+    ArrayList<Meal> meals;
 
     private ActivityMainBinding binding;
 
@@ -67,7 +65,7 @@ public class MainActivity extends AppCompatActivity {
             binding.recyclerView.setLayoutManager(new GridLayoutManager(this, 4));
         }
 
-        DessertAdapter mAdapter = new DessertAdapter(this, desserts);
+        MealsAdapter mAdapter = new MealsAdapter(this, meals);
         binding.recyclerView.setAdapter(mAdapter);
         binding.recyclerView.setItemAnimator(new DefaultItemAnimator());
     }
@@ -88,12 +86,12 @@ public class MainActivity extends AppCompatActivity {
                     @Override
                     public void onResponse(JSONObject response) {
                         String id, meal, photo;
-                        desserts = new ArrayList<>();
+                        meals = new ArrayList<>();
 
                         try {
                             //ambil objek meals
                             JSONArray jsonArray = response.getJSONArray("meals");
-                            desserts.clear();
+                            meals.clear();
 
                             //masukkan kedalam Arraylist
                             if (jsonArray.length() != 0) {
@@ -105,7 +103,7 @@ public class MainActivity extends AppCompatActivity {
                                     photo = data.getString("strMealThumb").trim();
 
                                     //masukkan kedalam Arraylist
-                                    desserts.add(new Dessert(id, meal, photo ));
+                                    meals.add(new Meal(id, meal, photo ));
                                 }
 
                                 showRecyclerGrid();
