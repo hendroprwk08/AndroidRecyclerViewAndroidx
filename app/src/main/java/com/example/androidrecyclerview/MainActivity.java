@@ -1,6 +1,8 @@
 package com.example.androidrecyclerview;
 
+import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.appcompat.widget.SearchView;
 import androidx.recyclerview.widget.DefaultItemAnimator;
 import androidx.recyclerview.widget.GridLayoutManager;
 import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
@@ -8,6 +10,9 @@ import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
 import android.content.res.Configuration;
 import android.os.Bundle;
 import android.os.Handler;
+import android.util.Log;
+import android.view.Menu;
+import android.view.MenuItem;
 import android.widget.ProgressBar;
 import android.widget.Toast;
 
@@ -30,6 +35,7 @@ public class MainActivity extends AppCompatActivity {
     ArrayList<Meal> meals;
 
     private ActivityMainBinding binding;
+    String cari = "";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -40,7 +46,7 @@ public class MainActivity extends AppCompatActivity {
         binding.swipeRefreshLayout.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
             @Override
             public void onRefresh() {
-                load();
+                load(cari);
 
                 new Handler().postDelayed(new Runnable() {
                     @Override public void run() {
@@ -55,7 +61,7 @@ public class MainActivity extends AppCompatActivity {
                 android.R.color.holo_orange_light,
                 android.R.color.holo_red_light);
 
-        load();
+        load(cari);
     }
 
     private void showRecyclerGrid(){
@@ -70,11 +76,14 @@ public class MainActivity extends AppCompatActivity {
         binding.recyclerView.setItemAnimator(new DefaultItemAnimator());
     }
 
-    public void load(){
+    public void load(String cari){
         binding.progressBar.setVisibility(ProgressBar.VISIBLE);
 
         RequestQueue queue = Volley.newRequestQueue(getApplicationContext());
         String url = "https://www.themealdb.com/api/json/v1/1/filter.php?c=Dessert";
+
+        if (cari != "" )
+            url = "https://www.themealdb.com/api/json/v1/1/search.php?s="+ cari;
 
         //Ambil JSON dari internet
         JsonObjectRequest jsObjRequest = new JsonObjectRequest(
@@ -124,5 +133,47 @@ public class MainActivity extends AppCompatActivity {
         });
 
         queue.add(jsObjRequest);
+    }
+
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        getMenuInflater().inflate(R.menu.menu_utama, menu);
+
+        MenuItem myActionMenuItem = menu.findItem( R.id.i_search);
+        SearchView searchView = (SearchView) myActionMenuItem.getActionView();
+        searchView.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
+            @Override
+            public boolean onQueryTextSubmit(String query) {
+                Log.i("TAG", "onQueryTextSubmit: "+ query);
+
+                load(query);
+
+                if( ! searchView.isIconified()) {
+                    searchView.setIconified(true);
+                }
+
+                myActionMenuItem.collapseActionView();
+                return false;
+            }
+            @Override
+            public boolean onQueryTextChange(String s) {
+                Log.i("TAG", "onQueryTextChange: "+ s);
+                return false;
+            }
+        });
+
+        return true;
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(@NonNull MenuItem item) {
+        int id = item.getItemId();
+
+        switch (id){
+            case R.id.i_search:
+                return true;
+            default:
+                return super.onOptionsItemSelected(item);
+        }
     }
 }

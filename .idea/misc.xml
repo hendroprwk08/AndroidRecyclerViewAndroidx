@@ -3,9 +3,11 @@
   <component name="DesignSurface">
     <option name="filePathToZoomLevelMap">
       <map>
+        <entry key="..\:/GitHub/AndroidRecyclerViewAndroidx/app/src/main/res/drawable/ic_image_search_grey_24.xml" value="0.11302083333333333" />
         <entry key="..\:/GitHub/AndroidRecyclerViewAndroidx/app/src/main/res/layout/activity_detil.xml" value="0.1953125" />
         <entry key="..\:/GitHub/AndroidRecyclerViewAndroidx/app/src/main/res/layout/activity_main.xml" value="0.1953125" />
         <entry key="..\:/GitHub/AndroidRecyclerViewAndroidx/app/src/main/res/layout/item_layout.xml" value="0.209375" />
+        <entry key="..\:/GitHub/AndroidRecyclerViewAndroidx/app/src/main/res/menu/menu_utama.xml" value="0.2046875" />
       </map>
     </option>
   </component>
