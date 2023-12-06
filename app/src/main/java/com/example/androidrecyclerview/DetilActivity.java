@@ -13,8 +13,6 @@ import android.widget.Toast;
 
 import com.android.volley.Request;
 import com.android.volley.RequestQueue;
-import com.android.volley.Response;
-import com.android.volley.VolleyError;
 import com.android.volley.toolbox.JsonObjectRequest;
 import com.android.volley.toolbox.Volley;
 import com.bumptech.glide.Glide;
@@ -24,24 +22,18 @@ import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import java.util.Objects;
+
 public class DetilActivity extends AppCompatActivity {
 
     private ActivityDetilBinding binding;
-//    ImageView iv;
-//    TextView tvInstruction, tvName;
-//    Toolbar toolbar;
     String meal, photo, instruction;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-//        setContentView(R.layout.activity_detil);
         binding = ActivityDetilBinding.inflate(getLayoutInflater());
         setContentView(binding.getRoot());
-
-//        iv = (ImageView) findViewById(R.id.iv_image);
-//        tvName = (TextView) findViewById(R.id.detail_tv_name);
-//        tvInstruction = (TextView) findViewById(R.id.detail_tv_instruction);
 
         Intent i = getIntent();
         String id = i.getStringExtra("i_idMeal");
@@ -49,7 +41,7 @@ public class DetilActivity extends AppCompatActivity {
         load(id);
 
         //tampilkan tombol panah back
-        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+        Objects.requireNonNull(getSupportActionBar()).setDisplayHomeAsUpEnabled(true);
     }
 
     private void load(String id) {
@@ -63,41 +55,32 @@ public class DetilActivity extends AppCompatActivity {
                 Request.Method.GET,
                 url,
                 null,
-                new Response.Listener<JSONObject>() {
+                response -> {
+                    //Log.d("Events: ", response.toString());
+                    try {
+                        JSONArray jsonArray = response.getJSONArray("meals");
+                        JSONObject data = jsonArray.getJSONObject(0);
 
-                    @Override
-                    public void onResponse(JSONObject response) {
-                        //Log.d("Events: ", response.toString());
-                        try {
-                            JSONArray jsonArray = response.getJSONArray("meals");
-                            JSONObject data = jsonArray.getJSONObject(0);
+                        meal = data.getString("strMeal");
+                        instruction = data.getString("strInstructions");
+                        photo = data.getString("strMealThumb");
 
-                            meal = data.getString("strMeal");
-                            instruction = data.getString("strInstructions");
-                            photo = data.getString("strMealThumb");
+                        Glide.with(getApplicationContext())
+                                .load(photo)
+                                .into(binding.ivImage);
 
-                            Glide.with(getApplicationContext())
-                                    .load(photo)
-                                    .into(binding.ivImage);
-
-                            binding.tvName.setText(meal);
-                            binding.tvInstruction.setText(instruction);
-                            binding.scrollView.setVisibility(ScrollView.VISIBLE);
-                        } catch (JSONException e) {
-                            e.printStackTrace();
-                        } finally {
-                            binding.progressBar.setVisibility(ProgressBar.GONE);
-                        }
+                        binding.tvName.setText(meal);
+                        binding.tvInstruction.setText(instruction);
+                        binding.scrollView.setVisibility(ScrollView.VISIBLE);
+                    } catch (JSONException e) {
+                        e.printStackTrace();
+                    } finally {
+                        binding.progressBar.setVisibility(ProgressBar.GONE);
                     }
-                }, new Response.ErrorListener() {
-
-            @Override
-            public void onErrorResponse(VolleyError error) {
-                // TODO Auto-generated method stub
-                Log.d("Events: ", error.toString());
-                Toast.makeText(getApplicationContext(), "Please check your connection", Toast.LENGTH_SHORT).show();
-            }
-        });
+                }, error -> {
+                    Log.d("Events: ", error.toString());
+                    Toast.makeText(getApplicationContext(), "Please check your connection", Toast.LENGTH_SHORT).show();
+                });
 
         queue.add(jsObjRequest);
     }
@@ -111,12 +94,10 @@ public class DetilActivity extends AppCompatActivity {
     //kontrol panah back
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
-        switch (item.getItemId()) {
-            case android.R.id.home:
-                onBackPressed();
-                return true;
-            default:
-                return super.onOptionsItemSelected(item);
+        if (item.getItemId() == android.R.id.home) {
+            onBackPressed();
+            return true;
         }
+        return super.onOptionsItemSelected(item);
     }
 }
