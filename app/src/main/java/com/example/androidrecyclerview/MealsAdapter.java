@@ -17,7 +17,6 @@ import java.util.List;
 class MealsAdapter extends RecyclerView.Adapter<MealsAdapter.GridViewHolder> {
     private List<Meal> meals;
     private Context context;
-
     private ItemRvBinding itemRvBinding;
 
     public MealsAdapter(Context context, List<Meal> meals) {
